@@ -3,7 +3,7 @@
 //assumes names are unique
 const findEmployeeByName = (name, arr) => arr.filter((item) => item.name === name)[0];
 
-//of course, there is an edge case where the person passed in has no manager
+//there does exist an edge case where the person passed in has no manager, but it doesn't cause problems later
 const findManagerFor = (employee, arr) => arr.filter((item) => item.id === employee.managerId)[0];
 
 const findCoworkersFor = (employee, arr) => arr.filter((item) => item.managerId === employee.managerId && item.id !== employee.id);
@@ -24,10 +24,11 @@ const generateSubtree = (employee, arr) => {
     return newEmp;
 }
 
-//assuming there's only one employee with no manager
+//assuming there's only one employee with no manager - here, generates the tree that starts with Moe
 const generateManagementTree = (arr) => generateSubtree(arr.filter((item) => !item.managerId)[0], arr);
 
 //helper method for displayManagementTree
+//desired output: [{name: 'moe', level: 0}, {name: 'larry', level: 1}, ...]
 const generateAltTree = (tree, startLevel) => {
     return tree.reports.reduce((acc, item) => acc.concat(generateAltTree(item, startLevel + 1)), [{name: tree.name, level: startLevel}]);
 }
@@ -36,7 +37,8 @@ const displayManagementTree = (tree) => {
     console.log(generateAltTree(tree, 0).map((item) => '-'.repeat(item.level) + item.name).join('\n'));
 }
 
-/* code supplied here */
+/* SUPPLIED HELPER CODE HERE */
+
 const employees = [
     { id: 1, name: 'moe'},
     { id: 2, name: 'larry', managerId: 1},
